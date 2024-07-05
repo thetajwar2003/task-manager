@@ -35,9 +35,15 @@ if (!uri) {
     throw new Error('MONGODB_URI environment variable not set');
 }
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,  // Timeout after 5 seconds instead of 30
+    socketTimeoutMS: 45000,  // Close sockets after 45 seconds of inactivity
+})
     .then(() => logger.log('Connected to MongoDB'))
     .catch(err => logger.error(`Error connecting to MongoDB: ${ err }`));
+
 
 const taskSchema = new mongoose.Schema({
     title: { type: String, required: true },
