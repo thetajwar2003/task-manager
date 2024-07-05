@@ -53,6 +53,11 @@ const taskHelper = (task) => ({
     description: task.description,
 });
 
+// Root route
+app.get('/', (req, res) => {
+    res.send('Welcome to the Task Manager API');
+});
+
 // Routes
 app.get('/tasks', async (req, res) => {
     try {
