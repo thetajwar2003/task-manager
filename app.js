@@ -38,11 +38,14 @@ if (!uri) {
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,  // Timeout after 5 seconds instead of 30
-    socketTimeoutMS: 45000,  // Close sockets after 45 seconds of inactivity
+    serverSelectionTimeoutMS: 30000,  // Increase server selection timeout
+    socketTimeoutMS: 60000,  // Increase socket timeout
 })
-    .then(() => logger.log('Connected to MongoDB'))
-    .catch(err => logger.error(`Error connecting to MongoDB: ${ err }`));
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => {
+        console.error(`Error connecting to MongoDB: ${ err }`);
+        process.exit(1);
+    });
 
 
 const taskSchema = new mongoose.Schema({
