@@ -104,6 +104,20 @@ app.get('/tasks/:taskId', async (req, res) => {
     }
 });
 
+app.get('/tasks/name/:taskName', async (req, res) => {
+    try {
+        const { taskName } = req.params;
+        const tasks = await Task.find({ title: taskName });
+        if (tasks.length === 0) {
+            return res.status(404).json({ detail: 'No tasks found with that name' });
+        }
+        res.json(tasks.map(taskHelper));
+    } catch (error) {
+        logger.error(`Error fetching tasks by name: ${ error }`);
+        res.status(500).json({ detail: error.message });
+    }
+});
+
 app.put('/tasks/:taskId', async (req, res) => {
     try {
         const { taskId } = req.params;
